@@ -1,0 +1,26 @@
+@use '../abstracts' as *;
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid $color-border;
+  color: $color-text-secondary;
+
+  &--p1 {
+    color: $color-accent;
+    border-color: $color-accent;
+  }
+
+  &--done {
+    color: $color-bg-surface;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+
+  &--wip {
+    color: $color-accent;
+  }
+}
