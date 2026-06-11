@@ -1,15 +1,110 @@
-// 側邊欄導覽結構（sitemap 八大區塊；Global Header / Utilities 不在側欄）。
-// path: null = 該入口頁尚未切版，側欄顯示為不可點。新增頁面改這裡即可。
+// 側邊欄兩層導覽（sitemap 八大區塊；Global Header / Utilities 不在側欄）。
+// 一級項：{ id, label, icon, path?, children? }
+//   - 有 children → 點擊切換展開；無 children + path → 連結；無 children + 無 path → 停用
+// children 元素：二級葉 { id, label, path } 或分組標題 { group }
+//   - path: null = 尚未切版，渲染為停用
+// 標籤對齊設計稿（中文）；未切版葉項標籤為暫定翻譯，待逐頁切版時校正。
 export const nav = [
-  { id: 'dashboard', label: 'Dashboard', icon: 'icon_dashboard.svg', path: null },
-  { id: 'alerts', label: 'Alerts & Monitoring', icon: 'icon_notification.svg', path: null },
-  // 暫以 Device Groups 作為 Devices 區塊的可達入口；Devices landing 切版後再改指
-  { id: 'devices', label: 'Devices', icon: 'icon_devices.svg', path: '/pages/devices/device-groups.html' },
-  { id: 'deployment', label: 'Deployment', icon: 'icon_deployment.svg', path: null },
-  { id: 'reports', label: 'Reports', icon: 'icon_reports.svg', path: null },
-  { id: 'support', label: 'Support', icon: 'icon_repair.svg', path: null },
-]
-
-export const navFooter = [
-  { id: 'settings', label: 'Settings', icon: 'icon_settings.svg', path: null },
+  { id: 'dashboard', label: '首頁', icon: 'icon_dashboard.svg', path: null },
+  {
+    id: 'alerts',
+    label: '警報',
+    icon: 'icon_notification.svg',
+    children: [
+      { group: '警報' },
+      { id: 'low-battery', label: '低電量', path: null },
+      { id: 'storage', label: '儲存空間', path: null },
+      { id: 'bsod', label: 'BSOD 藍屏當機', path: null },
+      { id: 'app-performance', label: 'App 效能', path: null },
+      { group: '監控' },
+      { id: 'patch-status', label: '修補程式部署狀態', path: null },
+      { id: 'update-status', label: '系統更新狀態', path: null },
+      { id: 'ota-status', label: 'OTA 部署狀態', path: null },
+      { id: 'power-status', label: '電源管理狀態', path: null },
+      { id: 'thinkbios-status', label: 'ThinkBIOS 狀態', path: null },
+      { id: 'diagnostic-report', label: '診斷報告', path: null },
+      { id: 'available-updates', label: '可用更新', path: null },
+    ],
+  },
+  {
+    id: 'devices',
+    label: '裝置',
+    icon: 'icon_devices.svg',
+    children: [
+      { id: 'devices-list', label: '裝置', path: null },
+      { id: 'device-detail', label: '裝置詳情', path: null },
+      { id: 'diagnostic', label: '診斷', path: null },
+      { id: 'accessories', label: '配件庫存', path: null },
+      { id: 'device-groups', label: '裝置群組', path: '/pages/devices/device-groups.html' },
+      { id: 'hardware-asset', label: '硬體資產管理', path: null },
+      { id: 'power-management', label: '電源管理', path: null },
+      { id: 'system-inventory', label: '系統庫存管理', path: null },
+      { id: 'warranty', label: '保固資訊', path: null },
+    ],
+  },
+  {
+    id: 'deployment',
+    label: '部署管理',
+    icon: 'icon_deployment.svg',
+    children: [
+      { group: '執行' },
+      { id: 'deploy-apps', label: '應用程式', path: null },
+      { id: 'deploy-patch', label: '修補程式', path: null },
+      { id: 'deploy-update', label: '系統更新', path: null },
+      { id: 'ring-sets', label: '定義 Ring 群組', path: null },
+      { group: '控制規則' },
+      { id: 'feature-settings', label: '功能設定', path: null },
+      { id: 'thinkcentre', label: 'ThinkCentre 自訂', path: null },
+      { id: 'thinkbios-mgmt', label: 'ThinkBIOS 管理', path: null },
+    ],
+  },
+  {
+    id: 'reports',
+    label: '報告',
+    icon: 'icon_reports.svg',
+    children: [
+      { group: '營運報告' },
+      { id: 'energy-savings', label: '節能', path: null },
+      { id: 'sw-change-log', label: '軟體庫存變更紀錄', path: null },
+      { id: 'hw-asset-changes', label: '硬體資產異動', path: null },
+      { id: 'decommissioned', label: '除役裝置', path: null },
+      { id: 'battery-health', label: '電池健康', path: null },
+      { id: 'storage-drives', label: '儲存磁碟', path: null },
+      { group: '診斷報告' },
+      { id: 'audit-log', label: '稽核紀錄', path: null },
+      { id: 'sw-audit', label: '軟體庫存稽核', path: null },
+      { id: 'utilization', label: '使用率摘要報告', path: null },
+    ],
+  },
+  {
+    id: 'support',
+    label: '報修與服務',
+    icon: 'icon_repair.svg',
+    children: [
+      { id: 'tickets', label: '報修工單', path: null },
+      { id: 'online-repair', label: '線上維修', path: null },
+      { id: 'customer-service', label: 'ASUS Console 客服', path: null },
+      { id: 'warranty-inquiry', label: '保固狀態查詢', path: null },
+      { id: 'warranty-update', label: '保固更新', path: null },
+      { id: 'auto-ticketing', label: '自動開單', path: null },
+    ],
+  },
+  {
+    id: 'settings',
+    label: '設定',
+    icon: 'icon_settings.svg',
+    children: [
+      { group: '帳號與權限' },
+      { id: 'org-account', label: '組織帳號', path: null },
+      { id: 'users', label: '使用者', path: null },
+      { id: 'user-groups', label: '使用者群組', path: null },
+      { group: '整合' },
+      { id: 'api-credentials', label: 'API 憑證', path: null },
+      { id: 'email-notifications', label: '電子郵件通知', path: null },
+      { id: 'manage-connector', label: '管理第三方串接', path: null },
+      { group: '偏好設定' },
+      { id: 'dashboard-customization', label: '儀表板自訂設定', path: null },
+      { id: 'orders', label: '訂單', path: null },
+    ],
+  },
 ]
