@@ -9,7 +9,7 @@ export const nav = [
   {
     id: 'alerts',
     label: '警報',
-    icon: 'icon_notification.svg',
+    icon: 'icon_warning.svg',
     children: [
       { group: '警報' },
       { id: 'low-battery', label: '低電量', path: null },

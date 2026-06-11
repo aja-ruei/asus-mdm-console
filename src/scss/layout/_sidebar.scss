@@ -4,12 +4,16 @@
 $nav-hover-bg: rgba($color-blue-20, 0.5);
 $nav-active-bg: $color-blue-20;
 
+// 柔和動效：較長時長 + ease-out 曲線
+$nav-dur: 0.24s;
+$nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
 .sidebar {
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: $color-bg-surface;
+  background: $color-bg-page; // 與整頁底色一致（gray-10），不再為白
   border-right: 1px solid $color-border;
   padding: 12px 8px;
   position: relative;
@@ -17,7 +21,7 @@ $nav-active-bg: $color-blue-20;
   overflow: visible; // 讓收合態飛出 popup 不被裁切
 }
 
-// 標頭：ASUS Console 標誌 + 收合 toggle
+// 標頭：ASUS logo + 收合 toggle
 .sidebar__head {
   display: flex;
   align-items: center;
@@ -27,10 +31,9 @@ $nav-active-bg: $color-blue-20;
   margin-bottom: 4px;
 }
 
-.sidebar__brand {
-  font-weight: 700;
-  font-size: 16px;
-  white-space: nowrap;
+.sidebar__logo {
+  height: 18px;
+  width: auto;
 }
 
 .sidebar__toggle {
@@ -63,6 +66,7 @@ $nav-active-bg: $color-blue-20;
   color: $color-text-primary;
   white-space: nowrap;
   text-align: left;
+  transition: background-color $nav-dur $nav-ease;
 
   &:not(.is-disabled):hover {
     background: $nav-hover-bg;
@@ -95,21 +99,34 @@ $nav-active-bg: $color-blue-20;
 
 .sidebar__chevron {
   flex-shrink: 0;
-  transition: transform 0.15s ease;
+  transition: transform $nav-dur $nav-ease;
 }
 
 .sidebar__group.is-expanded .sidebar__chevron {
   transform: rotate(180deg);
 }
 
-// 二級選單：展開時 inline、收合時飛出
+// 二級選單：展開時 inline 高度漸變、收合時飛出
 .sidebar__sub {
-  display: none;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows $nav-dur $nav-ease;
+}
+
+.sidebar__sub-inner {
+  min-height: 0;
+  overflow: hidden;
+  padding-left: 16px;
+  opacity: 0;
+  transition: opacity $nav-dur $nav-ease;
 }
 
 .sidebar__group.is-expanded .sidebar__sub {
-  display: block;
-  padding: 2px 0 2px 16px;
+  grid-template-rows: 1fr;
+}
+
+.sidebar__group.is-expanded .sidebar__sub-inner {
+  opacity: 1;
 }
 
 .sidebar__sub-title {
@@ -120,6 +137,7 @@ $nav-active-bg: $color-blue-20;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding: 2px 0;
 }
 
 .sidebar__sub-group {
@@ -134,6 +152,7 @@ $nav-active-bg: $color-blue-20;
   border-radius: 6px;
   color: $color-text-secondary;
   white-space: nowrap;
+  transition: background-color $nav-dur $nav-ease;
 
   &:not(.is-disabled):hover {
     background: $nav-hover-bg;
@@ -156,7 +175,7 @@ $nav-active-bg: $color-blue-20;
 
 // 收合型態：icon rail + hover 飛出
 @mixin collapsed {
-  .sidebar__brand,
+  .sidebar__logo,
   .sidebar__label,
   .sidebar__chevron {
     display: none;
@@ -171,13 +190,8 @@ $nav-active-bg: $color-blue-20;
     padding: 10px;
   }
 
-  // 收合時一級項的展開不再 inline 顯示
-  .sidebar__group.is-expanded .sidebar__sub {
-    display: none;
-  }
-
-  // hover 飛出 popup
-  .sidebar__group:hover .sidebar__sub {
+  // 收合：子選單改為 hover 飛出 popup（白底浮層 + 淡入位移）
+  .sidebar__sub {
     display: block;
     position: absolute;
     left: 100%;
@@ -185,14 +199,30 @@ $nav-active-bg: $color-blue-20;
     margin-left: 8px;
     min-width: 220px;
     padding: 8px;
-    background: $color-bg-surface;
+    background: $color-bg-surface; // 白底浮層，與淺灰側邊欄區隔
     border: 1px solid $color-border;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     z-index: 30;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-4px);
+    transition: opacity $nav-dur $nav-ease, transform $nav-dur $nav-ease, visibility $nav-dur;
   }
 
-  .sidebar__group:hover .sidebar__sub-title {
+  .sidebar__group:hover .sidebar__sub {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  .sidebar__sub-inner {
+    overflow: visible;
+    opacity: 1;
+    padding-left: 0;
+  }
+
+  .sidebar__sub-title {
     display: block;
     padding: 4px 12px 8px;
     font-weight: 600;
@@ -209,4 +239,15 @@ $nav-active-bg: $color-blue-20;
 
 body.is-sidebar-collapsed {
   @include collapsed;
+}
+
+// 尊重減少動態偏好
+@media (prefers-reduced-motion: reduce) {
+  .sidebar__item,
+  .sidebar__sub-item,
+  .sidebar__chevron,
+  .sidebar__sub,
+  .sidebar__sub-inner {
+    transition: none;
+  }
 }

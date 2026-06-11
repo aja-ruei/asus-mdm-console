@@ -41,12 +41,13 @@ function groupHtml(item, current) {
     row = `<span class="sidebar__item is-disabled${activeCls}" title="尚未切版">${icon}${label}</span>`
   }
 
-  // sub：展開時 inline 顯示；收合時作為 hover 飛出 popup（含標題）
+  // sub：展開時 inline（高度漸變）；收合時作為 hover 飛出 popup（含標題）
+  // 內層 .sidebar__sub-inner 供 grid 高度漸變使用
   const subItems = (item.children ?? []).map((c) => childHtml(c, current)).join('')
-  const sub = `<div class="sidebar__sub">
+  const sub = `<div class="sidebar__sub"><div class="sidebar__sub-inner">
     <div class="sidebar__sub-title">${item.label}</div>
     ${item.children ? `<ul class="sidebar__sub-list">${subItems}</ul>` : ''}
-  </div>`
+  </div></div>`
 
   return `<div class="sidebar__group${expandedCls}">${row}${sub}</div>`
 }
@@ -59,7 +60,7 @@ export function renderSidebar(el) {
   el.outerHTML = `
     <nav class="sidebar" aria-label="主導覽">
       <div class="sidebar__head">
-        <span class="sidebar__brand">ASUS Console</span>
+        <img class="sidebar__logo" src="/assets/logo.svg" alt="ASUS Console" />
         <button class="sidebar__toggle" type="button" aria-label="切換側邊欄">
           <img src="/assets/icon_open-panel.svg" alt="" />
         </button>
