@@ -4,9 +4,9 @@
 $nav-hover-bg: rgba($color-blue-20, 0.5);
 $nav-active-bg: $color-blue-20;
 
-// 柔和動效：較長時長 + ease-out 曲線
-$nav-dur: 0.24s;
-$nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+// 柔和動效：較長時長 + ease-out 曲線（easeOutQuad）
+$nav-dur: 0.35s;
+$nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
 .sidebar {
   grid-area: sidebar;
