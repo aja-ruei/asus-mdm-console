@@ -13,12 +13,13 @@ $nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: $color-bg-page; // 與整頁底色一致（gray-10），不再為白
+  background: $color-bg-page; // 展開：與整頁底色一致（gray-10）；收合漸變為白
   border-right: 1px solid $color-border;
   padding: 12px 8px;
   position: relative;
   z-index: 20;
   overflow: visible; // 讓收合態飛出 popup 不被裁切
+  transition: background-color $nav-dur $nav-ease;
 }
 
 // 標頭：ASUS logo + 收合 toggle
@@ -175,6 +176,10 @@ $nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
 // 收合型態：icon rail + hover 飛出
 @mixin collapsed {
+  .sidebar {
+    background: $color-bg-surface; // 收合：漸變為白
+  }
+
   .sidebar__logo,
   .sidebar__label,
   .sidebar__chevron {
@@ -243,6 +248,7 @@ body.is-sidebar-collapsed {
 
 // 尊重減少動態偏好
 @media (prefers-reduced-motion: reduce) {
+  .sidebar,
   .sidebar__item,
   .sidebar__sub-item,
   .sidebar__chevron,
