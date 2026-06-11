@@ -1,0 +1,10 @@
+@use '../abstracts' as *;
+
+.page-sample h1 {
+  margin-bottom: 4px;
+}
+
+.page-sample__note {
+  color: $color-text-secondary;
+  margin-bottom: 24px;
+}

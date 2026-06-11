@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>切版模式範例 — ASUS MDM Console</title>
+  </head>
+  <body data-page="sample">
+    <div class="app">
+      <div data-component="sidebar"></div>
+      <div data-component="header"></div>
+      <main class="page page-sample">
+        <h1>切版模式範例頁</h1>
+        <p class="page-sample__note" data-state-note></p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>OS</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody data-list="sample"></tbody>
+        </table>
+      </main>
+    </div>
+    <script type="module" src="/src/js/pages/sample.js"></script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+@use '../abstracts' as *;
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $color-bg-surface;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+
+  th,
+  td {
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    color: $color-text-secondary;
+    font-weight: 600;
+  }
+}
+
+.data-table__cell--truncate {
+  max-width: 320px;
+  @include truncate;
+}
+
+.data-table__state-row td {
+  text-align: center;
+  padding: 48px 16px;
+  color: $color-text-secondary;
+}
