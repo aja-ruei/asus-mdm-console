@@ -1,0 +1,27 @@
+@use '../abstracts' as *;
+
+.app {
+  display: grid;
+  grid-template:
+    'sidebar header' auto
+    'sidebar main' 1fr / 240px 1fr;
+  min-height: 100vh;
+}
+
+.page {
+  grid-area: main;
+  padding: 24px;
+  min-width: 0; // 防止表格撐爆 grid
+}
+
+// tablet（<1280）：側欄收成 icon 列（spec §10）
+@include respond(tablet) {
+  .app {
+    grid-template-columns: 64px 1fr;
+  }
+}
+
+// header 的切換鈕手動收合（桌機也可用）
+body.is-sidebar-collapsed .app {
+  grid-template-columns: 64px 1fr;
+}

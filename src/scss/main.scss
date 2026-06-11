@@ -1,3 +1,6 @@
 // 7-1 入口。abstracts 不在這裡載入——它不產出 CSS，由各 partial 自行 @use。
 @use 'base/reset';
 @use 'base/typography';
+@use 'layout/shell';
+@use 'layout/sidebar';
+@use 'layout/header';

@@ -1,0 +1,56 @@
+@use '../abstracts' as *;
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 56px;
+  padding: 0 24px;
+  background: $color-bg-surface;
+  border-bottom: 1px solid $color-border;
+}
+
+.header__menu-toggle img,
+.header__icon-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.header__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 320px;
+  padding: 6px 12px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    width: 100%;
+    background: transparent;
+  }
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.header__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $color-accent;
+  color: $color-bg-surface;
+  font-weight: 600;
+}

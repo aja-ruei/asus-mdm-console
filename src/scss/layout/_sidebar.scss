@@ -1,0 +1,64 @@
+@use '../abstracts' as *;
+
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: $color-bg-surface;
+  border-right: 1px solid $color-border;
+  padding: 16px 8px;
+  overflow: hidden;
+}
+
+.sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: $color-text-secondary;
+  white-space: nowrap;
+
+  &:hover:not(.is-disabled) {
+    background: $color-bg-page;
+    color: $color-text-primary;
+  }
+
+  &.is-active {
+    background: $color-bg-page;
+    color: $color-accent;
+    font-weight: 600;
+  }
+
+  &.is-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.sidebar__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+// 收合狀態（tablet 或手動）：藏文字、只剩 icon
+@mixin collapsed {
+  .sidebar__label {
+    display: none;
+  }
+
+  .sidebar__item {
+    justify-content: center;
+    padding: 10px;
+  }
+}
+
+@include respond(tablet) {
+  @include collapsed;
+}
+
+body.is-sidebar-collapsed {
+  @include collapsed;
+}
