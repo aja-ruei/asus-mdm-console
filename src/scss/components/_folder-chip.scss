@@ -1,0 +1,23 @@
+@use '../abstracts' as *;
+
+// 群組名稱的 folder 標籤（資料表內可複用）
+.folder-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 280px;
+  padding: 4px 10px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  background: $color-bg-surface;
+}
+
+.folder-chip__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.folder-chip__label {
+  @include truncate;
+}

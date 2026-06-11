@@ -70,7 +70,7 @@ export const groups = [
           item('Devices › Device Detail', 'P1'),
           item('Devices › Diagnostic', 'P1'),
           item('Accessories Inventory', 'P2'),
-          item('Device Groups', 'P1'),
+          item('Device Groups', 'P1', '/pages/devices/device-groups.html', 'done'),
           item('Hardware Asset Management', 'P1'),
           item('Power Management', 'P1'),
           item('System Inventory Management', 'P1'),

@@ -11,46 +11,76 @@
   border-bottom: 1px solid $color-border;
 }
 
-.header__menu-toggle img,
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
 .header__icon-btn img {
   width: 20px;
   height: 20px;
 }
 
-.header__search {
+.header__user {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 0 1 320px;
-  padding: 6px 12px;
-  border: 1px solid $color-border;
-  border-radius: 6px;
-
-  img {
-    width: 16px;
-    height: 16px;
-  }
-
-  input {
-    border: none;
-    outline: none;
-    width: 100%;
-    background: transparent;
-  }
-}
-
-.header__actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: auto;
 }
 
 .header__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background: $color-accent;
   color: $color-bg-surface;
+  font-size: 13px;
   font-weight: 600;
+  flex-shrink: 0;
+}
+
+.header__user-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.header__user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-text-primary;
+}
+
+.header__user-email {
+  font-size: 12px;
+  color: $color-text-secondary;
+}
+
+// 麵包屑（per-page，header 左側）
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: $color-text-secondary;
+}
+
+.breadcrumb__sep {
+  color: $color-text-secondary;
+}
+
+.breadcrumb__item.is-current {
+  color: $color-accent;
+  font-weight: 600;
+}
+
+@include respond(below-tablet) {
+  .header__user-meta {
+    display: none;
+  }
 }

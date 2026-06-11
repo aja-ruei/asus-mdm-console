@@ -4,11 +4,28 @@
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 4px;
   background: $color-bg-surface;
   border-right: 1px solid $color-border;
   padding: 16px 8px;
   overflow: hidden;
+}
+
+.sidebar__toggle {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  color: $color-text-secondary;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.sidebar__footer {
+  margin-top: auto;
 }
 
 .sidebar__item {
@@ -49,7 +66,8 @@
     display: none;
   }
 
-  .sidebar__item {
+  .sidebar__item,
+  .sidebar__toggle {
     justify-content: center;
     padding: 10px;
   }

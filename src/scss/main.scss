@@ -6,5 +6,10 @@
 @use 'layout/header';
 @use 'components/data-table';
 @use 'components/badge';
+@use 'components/button';
+@use 'components/folder-chip';
+@use 'components/toolbar';
+@use 'components/pagination';
 @use 'pages/sample';
 @use 'pages/board';
+@use 'pages/device-groups';

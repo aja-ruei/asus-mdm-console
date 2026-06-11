@@ -1,0 +1,40 @@
+@use '../abstracts' as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.btn__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.btn--primary {
+  background: $color-accent;
+  color: $color-bg-surface;
+
+  &:not(:disabled):hover {
+    background: color-mix(in srgb, $color-accent 88%, #000);
+  }
+}
+
+.btn--ghost {
+  color: $color-text-primary;
+
+  &:not(:disabled):hover {
+    background: $color-bg-page;
+  }
+}

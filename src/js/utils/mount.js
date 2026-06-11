@@ -9,6 +9,6 @@ export function mountShell() {
     registry[el.dataset.component]?.(el)
   })
   document
-    .querySelector('.header__menu-toggle')
+    .querySelector('.sidebar__toggle')
     ?.addEventListener('click', () => document.body.classList.toggle('is-sidebar-collapsed'))
 }

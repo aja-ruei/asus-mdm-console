@@ -1,0 +1,50 @@
+@use '../abstracts' as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  padding: 16px 4px 4px;
+  font-size: 14px;
+  color: $color-text-secondary;
+}
+
+.pagination__size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  select {
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid $color-border;
+    border-radius: 6px;
+    background: $color-bg-surface;
+    color: $color-text-primary;
+  }
+}
+
+.pagination__nav {
+  display: flex;
+  gap: 4px;
+
+  button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid $color-border;
+    border-radius: 6px;
+    background: $color-bg-surface;
+    color: $color-text-primary;
+
+    &:not(:disabled):hover {
+      border-color: $color-accent;
+      color: $color-accent;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

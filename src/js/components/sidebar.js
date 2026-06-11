@@ -15,6 +15,9 @@ export function renderSidebar(el) {
   const current = document.body.dataset.page
   el.outerHTML = `
     <nav class="sidebar" aria-label="主導覽">
+      <button class="sidebar__toggle" type="button" aria-label="切換側邊欄">
+        <img src="/assets/icon_open-panel.svg" alt="" />
+      </button>
       <div class="sidebar__nav">${nav.map((i) => itemHtml(i, current)).join('')}</div>
       <div class="sidebar__footer">${navFooter.map((i) => itemHtml(i, current)).join('')}</div>
     </nav>`
