@@ -1,0 +1,12 @@
+@use '../abstracts' as *;
+
+html {
+  font-family: $font-family-base;
+  color: $color-text-primary;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: $color-bg-page;
+  min-height: 100vh;
+}

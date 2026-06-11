@@ -1,0 +1,11 @@
+@use 'tokens.generated' as t;
+
+// 語意層（spec §5）：元件樣式只准引用本檔，不直接用 primitive。
+// dark mode 未來只動這一層。逐頁切版時按需擴充。
+$color-bg-page: t.$color-gray-10;        // 頁面底色：最淺灰階 #f5f5f5
+$color-bg-surface: #fff;                 // 卡片／面板底色：tokens 無 white，用字面值
+$color-text-primary: t.$color-gray-90;   // 主文字：最深灰階 #262626
+$color-text-secondary: t.$color-gray-60; // 次要文字：中灰階 #818181
+$color-border: t.$color-gray-30;         // 一般框線：淺灰階 #cccccc
+$color-accent: t.$color-blue-60;         // 品牌主色：藍階中段 #006ce1
+$font-family-base: t.$font-family-segoe-ui, system-ui, sans-serif;

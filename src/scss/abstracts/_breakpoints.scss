@@ -1,0 +1,17 @@
+// 桌機（≥1280px）為設計基準；tablet（<1280）側邊欄收合；<768 僅保證不爆版（spec §10）
+$bp-tablet: 768px;
+$bp-desktop: 1280px;
+
+@mixin respond($name) {
+  @if $name == tablet {
+    @media (max-width: #{$bp-desktop - 0.02px}) {
+      @content;
+    }
+  } @else if $name == below-tablet {
+    @media (max-width: #{$bp-tablet - 0.02px}) {
+      @content;
+    }
+  } @else {
+    @error "未知斷點：#{$name}（可用：tablet、below-tablet）";
+  }
+}
