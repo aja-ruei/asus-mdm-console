@@ -28,9 +28,9 @@
 
 **Step 0 — build-vs-reuse 檢查**：開 Figma 該畫面，對照 `src/js/data/components-registry.js`，列出需要的元件並標 ✅已有/🆕需新建/⚠️需擴充；🆕 先協商來源稿。
 
-**Step 1 — 從 Figma 抽精確數值**：用 Figma MCP 抽出間距/尺寸/字級/顏色，**每個值落到 `_semantic.scss` 的語意 token**；缺的先補（design-token 集合 → `npm run tokens`），**絕不在 SCSS 寫死 raw px/hex**。存一張設計稿截圖作 review 基準。
+**Step 1 — 從 Figma 抽精確數值**：用 Figma MCP 抽出間距/尺寸/字級/顏色，**每個值落到 `abstracts/_semantic.scss` 的語意 token**；缺的先補（design-token 集合 → `npm run tokens`），**絕不在 SCSS 寫死 raw px/hex**。存一張設計稿截圖作 review 基準。
 
-**Step 2 — 組裝實作**：建 `pages/<area>/<page>.html`、`src/js/data/<page>.js`（五種狀態變體）、`src/js/pages/<page>.js`、`src/scss/pages/_<page>.scss`。頁面 SCSS 只引用 `_semantic.scss`。共用熱點（`main.scss`、`progress-config.js`、`nav-config.js`、`components/**`、`components-registry.js`）不直接改，走 integrator。
+**Step 2 — 組裝實作**：建 `pages/<area>/<page>.html`、`src/js/data/<page>.js`（五種狀態變體）、`src/js/pages/<page>.js`、`src/scss/pages/_<page>.scss`。頁面 SCSS 只引用 `abstracts/_semantic.scss`。共用熱點（`main.scss`、`progress-config.js`、`nav-config.js`、`components/**`、`components-registry.js`）不直接改，走 integrator。
 
 **Step 3 — 自檢**：`npm run dev` 逐一開五種 `?state=`，console 無錯；桌機 ≥1280 / 平板 768–1279 各看一次。
 
