@@ -12,14 +12,21 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 16px; // 設計稿 Side-Menu：toggle ↔ 導覽群組間距 16
   background: $color-bg-page; // 展開：與整頁底色一致（gray-10）；收合漸變為白
   border-right: 1px solid $color-border;
-  padding: 12px 8px;
+  padding: 16px 12px; // 設計稿 Side-Menu：py16 / px12
   position: relative;
   z-index: 20;
   overflow: visible; // 讓收合態飛出 popup 不被裁切
   transition: background-color $nav-dur $nav-ease, box-shadow $nav-dur $nav-ease;
+}
+
+// 導覽群組：項目間距 12（設計稿 side-menu nav group gap-12）
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 // 標頭：ASUS logo + 收合 toggle
@@ -28,8 +35,6 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 4px 8px 8px;
-  margin-bottom: 4px;
 }
 
 // 品牌：logo + Console 字樣（展開 delay .12s 淡入；收合 translateX(-6px) 淡出）
@@ -66,15 +71,22 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 .sidebar__toggle {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-shrink: 0; // 收合時不被（淡出中的）品牌擠壓
+  width: 36px; // 設計稿 toggle 容器 36×36
+  height: 36px;
   color: $color-text-secondary;
 
   img {
-    width: 20px;
+    width: 20px; // 設計稿 icon_open-panel 20
     height: 20px;
   }
 }
 
 .sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-top: auto;
 }
 
@@ -82,14 +94,15 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
 }
 
-// 一級項
+// 一級項（設計稿 side-menu_item：h40 / px8 py4 / radius8）
 .sidebar__item {
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 10px 12px;
-  border-radius: 6px;
+  height: 40px;
+  padding: 4px 8px;
+  border-radius: 8px;
   color: $color-text-primary;
   white-space: nowrap;
   text-align: left;
@@ -115,8 +128,8 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .sidebar__icon {
-  width: 20px;
-  height: 20px;
+  width: 24px; // 設計稿 icon size 24
+  height: 24px;
   flex-shrink: 0;
 }
 
@@ -216,8 +229,16 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.1); // 展開無陰影、收合有
   }
 
-  // 內容即時淡出（delay:0），不用 display:none → 與 overflow:visible 飛出共存
+  // 收合時標頭僅置中 toggle
+  .sidebar__head {
+    justify-content: center;
+    gap: 0;
+  }
+
+  // 品牌淡出且不佔寬（width:0），避免擠壓置中的 toggle
   .sidebar__brand {
+    width: 0;
+    overflow: hidden;
     opacity: 0;
     transform: translateX(-6px);
     transition-delay: 0s;
@@ -229,22 +250,19 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition-delay: 0s;
   }
 
+  // 收合不顯示 chevron：移出版面流，避免佔位讓 icon 偏離 rail 中心（收合即時消失）
   .sidebar__chevron {
-    opacity: 0;
-    transition-delay: 0s;
+    display: none;
   }
 
+  // 收合不顯示分隔線：移出版面流，維持設計稿 toggle ↔ nav 的 16 間距
   .sidebar__divider {
-    opacity: 0;
-  }
-
-  .sidebar__head {
-    justify-content: center;
+    display: none;
   }
 
   .sidebar__item {
     justify-content: center;
-    padding: 10px;
+    gap: 0; // 移除 icon 與（max-width:0 的）標籤間距，icon 才會真正置中
   }
 
   // 收合：子選單改為 hover 飛出 popup（白底浮層 + 淡入位移）
@@ -264,13 +282,15 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     opacity: 0;
     visibility: hidden;
     transform: translateX(-4px);
-    transition: opacity $nav-dur $nav-ease, transform $nav-dur $nav-ease, visibility $nav-dur;
+    // 即時隱藏：避免展開→收合切換時所有飛出子選單一起淡出造成殘影；僅 hover 進場有過場
+    transition: none;
   }
 
   .sidebar__group:hover .sidebar__sub {
     opacity: 1;
     visibility: visible;
     transform: translateX(0);
+    transition: opacity $nav-dur $nav-ease, transform $nav-dur $nav-ease;
   }
 
   .sidebar__sub-inner {
@@ -290,10 +310,8 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
 
-@include respond(tablet) {
-  @include collapsed;
-}
-
+// 收合樣式唯一由 body class 驅動；預設值（桌機展開／平板收合）由 JS 依視窗寬度設定，
+// 使用者 toggle 後其偏好優先，平板也可展開（不強制鎖定）。
 body.is-sidebar-collapsed {
   @include collapsed;
 }
