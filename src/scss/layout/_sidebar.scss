@@ -19,7 +19,7 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   z-index: 20;
   overflow: visible; // 讓收合態飛出 popup 不被裁切
-  transition: background-color $nav-dur $nav-ease;
+  transition: background-color $nav-dur $nav-ease, box-shadow $nav-dur $nav-ease;
 }
 
 // 標頭：ASUS logo + 收合 toggle
@@ -32,9 +32,35 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   margin-bottom: 4px;
 }
 
+// 品牌：logo + Console 字樣（展開 delay .12s 淡入；收合 translateX(-6px) 淡出）
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s ease 0.12s, transform 0.2s ease 0.12s;
+}
+
 .sidebar__logo {
   height: 18px;
   width: auto;
+}
+
+.sidebar__brand-text {
+  font-family: $font-family-base; // 參考用 'TT Norms Pro' 500；本專案無此字型，待確認是否引入
+  font-weight: 600;
+  font-size: 15px;
+  color: $color-text-primary;
+  white-space: nowrap;
+}
+
+// 標頭下方分隔線
+.sidebar__divider {
+  height: 1px;
+  background: $color-border;
+  margin: 0 8px 8px;
 }
 
 .sidebar__toggle {
@@ -96,15 +122,24 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
 .sidebar__label {
   flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 160px;
+  opacity: 1;
+  // delay 只寫在展開態 → 展開時延遲淡入；收合態 delay:0 即時淡出
+  transition: max-width $nav-dur $nav-ease, opacity 0.2s ease 0.1s;
 }
 
 .sidebar__chevron {
   flex-shrink: 0;
-  transition: transform $nav-dur $nav-ease;
+  opacity: 1;
+  // 旋轉慣例（D4）：未展開 -90deg、展開 0
+  transform: rotate(-90deg);
+  transition: transform $nav-dur $nav-ease, opacity 0.2s ease 0.1s;
 }
 
 .sidebar__group.is-expanded .sidebar__chevron {
-  transform: rotate(180deg);
+  transform: rotate(0);
 }
 
 // 二級選單：展開時 inline 高度漸變、收合時飛出
@@ -178,12 +213,29 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 @mixin collapsed {
   .sidebar {
     background: $color-bg-surface; // 收合：漸變為白
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.1); // 展開無陰影、收合有
   }
 
-  .sidebar__logo,
-  .sidebar__label,
+  // 內容即時淡出（delay:0），不用 display:none → 與 overflow:visible 飛出共存
+  .sidebar__brand {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition-delay: 0s;
+  }
+
+  .sidebar__label {
+    max-width: 0;
+    opacity: 0;
+    transition-delay: 0s;
+  }
+
   .sidebar__chevron {
-    display: none;
+    opacity: 0;
+    transition-delay: 0s;
+  }
+
+  .sidebar__divider {
+    opacity: 0;
   }
 
   .sidebar__head {
@@ -253,7 +305,9 @@ body.is-sidebar-collapsed {
   .sidebar__sub-item,
   .sidebar__chevron,
   .sidebar__sub,
-  .sidebar__sub-inner {
+  .sidebar__sub-inner,
+  .sidebar__label,
+  .sidebar__brand {
     transition: none;
   }
 }

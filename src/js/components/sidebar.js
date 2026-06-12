@@ -60,11 +60,15 @@ export function renderSidebar(el) {
   el.outerHTML = `
     <nav class="sidebar" aria-label="主導覽">
       <div class="sidebar__head">
-        <img class="sidebar__logo" src="/assets/logo.svg" alt="ASUS Console" />
+        <div class="sidebar__brand">
+          <img class="sidebar__logo" src="/assets/logo.svg" alt="ASUS Console" />
+          <span class="sidebar__brand-text">Console</span>
+        </div>
         <button class="sidebar__toggle" type="button" aria-label="切換側邊欄">
           <img src="/assets/icon_open-panel.svg" alt="" />
         </button>
       </div>
+      <div class="sidebar__divider"></div>
       <div class="sidebar__nav">${main.map((i) => groupHtml(i, current)).join('')}</div>
       <div class="sidebar__footer">${footer.map((i) => groupHtml(i, current)).join('')}</div>
     </nav>`

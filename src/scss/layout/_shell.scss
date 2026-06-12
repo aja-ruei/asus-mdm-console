@@ -6,6 +6,7 @@
     'sidebar header' auto
     'sidebar main' 1fr / 240px 1fr;
   min-height: 100vh;
+  transition: grid-template-columns 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .page {
@@ -17,11 +18,18 @@
 // tablet（<1280）：側欄收成 icon 列（spec §10）
 @include respond(tablet) {
   .app {
-    grid-template-columns: 64px 1fr;
+    grid-template-columns: 80px 1fr;
   }
 }
 
 // header 的切換鈕手動收合（桌機也可用）
 body.is-sidebar-collapsed .app {
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: 80px 1fr;
+}
+
+// 尊重減少動態偏好
+@media (prefers-reduced-motion: reduce) {
+  .app {
+    transition: none;
+  }
 }
