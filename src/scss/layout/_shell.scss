@@ -4,7 +4,7 @@
   display: grid;
   grid-template:
     'sidebar header' auto
-    'sidebar main' 1fr / 240px 1fr;
+    'sidebar main' 1fr / 220px 1fr;
   min-height: 100vh;
   transition: grid-template-columns 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -15,16 +15,15 @@
   min-width: 0; // 防止表格撐爆 grid
 }
 
-// tablet（<1280）：側欄收成 icon 列（spec §10）
-@include respond(tablet) {
-  .app {
-    grid-template-columns: 80px 1fr;
-  }
+// 收合（icon rail）：唯一由 body class 驅動，可由使用者 toggle 控制（桌機/平板皆同）。
+// 預設展開/收合依視窗寬度，由 JS 設定（桌機展開、平板收合），不在 CSS 強制鎖定。
+body.is-sidebar-collapsed .app {
+  grid-template-columns: 68px 1fr;
 }
 
-// header 的切換鈕手動收合（桌機也可用）
-body.is-sidebar-collapsed .app {
-  grid-template-columns: 80px 1fr;
+// 初次載入時抑制過場，避免（平板）套用預設收合時出現 220→68 的開場動畫
+body.no-anim * {
+  transition: none !important;
 }
 
 // 尊重減少動態偏好
