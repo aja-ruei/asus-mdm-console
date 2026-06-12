@@ -5,22 +5,21 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  height: 56px;
-  padding: 0 24px;
-  background: $color-bg-surface;
-  border-bottom: 1px solid $color-border;
+  height: 68px; // 設計稿 py16 + 內容 36 ＝ 68
+  padding: 0 32px; // 設計稿 Header px32
+  // 設計稿：header 透明置於頁面底色（gray-10）之上，無白底、無底線
 }
 
 .header__actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px; // 設計稿 User Info：通知鈕 ↔ 使用者資訊 gap20
   margin-left: auto;
 }
 
 .header__icon-btn img {
-  width: 20px;
-  height: 20px;
+  width: 24px; // 設計稿 icon-button 內 icon 24
+  height: 24px;
 }
 
 .header__user {
@@ -33,13 +32,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: $color-accent;
+  width: 36px; // 設計稿 User Initials 36×36
+  height: 36px;
+  border-radius: 12px; // 設計稿 rounded-12（圓角方形，非正圓）
+  background: $color-accent-soft; // 設計稿 blue-40 #61adff
   color: $color-bg-surface;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 16px; // 設計稿 size/m
+  font-weight: 500; // 設計稿 Medium
   flex-shrink: 0;
 }
 

@@ -1,50 +1,61 @@
 @use '../abstracts' as *;
 
+// 設計稿 Table pagenation：上緣分隔線 + 三組（每頁行數／頁碼跳轉／頁數＋前後鍵）靠右
 .pagination {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 24px;
-  padding: 16px 4px 4px;
-  font-size: 14px;
-  color: $color-text-secondary;
+  gap: 16px; // 設計稿群組間距 16
+  padding-top: 20px; // 設計稿 pt20
+  border-top: 1px solid $color-border-subtle; // gray-20 #dcdcdc
+  font-size: 12px; // 設計稿文字 size/xs
+  color: $color-text-primary;
 }
 
-.pagination__size {
+// 標籤 ↔ 控制項（設計稿 gap4）
+.pagination__group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+}
 
-  select {
-    height: 32px;
-    padding: 0 8px;
-    border: 1px solid $color-border;
-    border-radius: 6px;
-    background: $color-bg-surface;
-    color: $color-text-primary;
+.pagination__label {
+  white-space: nowrap;
+}
+
+// 下拉（每頁行數／頁碼跳轉）：bordered、radius6、py4 pl12 pr4、值 14
+.pagination__select {
+  height: 28px;
+  padding: 4px 4px 4px 12px;
+  border: 1px solid $color-text-secondary; // 設計稿 dropdown border #818181 (gray-60)
+  border-radius: 6px;
+  background: $color-bg-surface;
+  color: $color-text-primary;
+  font-size: 14px;
+
+  &:disabled {
+    background: $color-bg-page; // 設計稿 disabled：gray-10 底
+    border-color: $color-border; // gray-30
+    color: $color-text-secondary;
+    cursor: not-allowed;
   }
 }
 
-.pagination__nav {
+// 前/後頁：無框 24×24 icon 鈕
+.pagination__arrow {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: $color-text-primary;
 
-  button {
-    width: 32px;
-    height: 32px;
-    border: 1px solid $color-border;
-    border-radius: 6px;
-    background: $color-bg-surface;
-    color: $color-text-primary;
+  &:not(:disabled):hover {
+    color: $color-accent;
+  }
 
-    &:not(:disabled):hover {
-      border-color: $color-accent;
-      color: $color-accent;
-    }
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }

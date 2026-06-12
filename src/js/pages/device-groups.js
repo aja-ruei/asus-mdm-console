@@ -37,21 +37,33 @@ function rowHtml(d) {
     </tr>`
 }
 
+const CHEVRON_L = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 7l-5 5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+const CHEVRON_R = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 7l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+
 function renderPager(total) {
   const pageCount = Math.max(1, Math.ceil(total / pageSize))
   const start = total === 0 ? 0 : (page - 1) * pageSize + 1
   const end = Math.min(page * pageSize, total)
+  const pageOptions = Array.from({ length: pageCount }, (_, i) => i + 1)
+    .map((n) => `<option value="${n}"${n === page ? ' selected' : ''}>${n}</option>`)
+    .join('')
   pager.innerHTML = `
-    <label class="pagination__size">每頁行數：
-      <select data-page-size>
+    <span class="pagination__group">
+      <span class="pagination__label">每頁行數：</span>
+      <select class="pagination__select" data-page-size aria-label="每頁行數">
         ${[10, 20, 50].map((n) => `<option value="${n}"${n === pageSize ? ' selected' : ''}>${n}</option>`).join('')}
       </select>
-    </label>
-    <span class="pagination__range">${start}-${end} 共 ${total} 條</span>
-    <span class="pagination__pages">共 ${pageCount} 頁</span>
-    <span class="pagination__nav">
-      <button type="button" data-page-prev aria-label="上一頁"${page <= 1 ? ' disabled' : ''}>‹</button>
-      <button type="button" data-page-next aria-label="下一頁"${page >= pageCount ? ' disabled' : ''}>›</button>
+    </span>
+    <span class="pagination__group">
+      <span class="pagination__label">${start}-${end} 共 ${total} 條</span>
+      <select class="pagination__select" data-page-jump aria-label="跳至頁碼"${pageCount <= 1 ? ' disabled' : ''}>
+        ${pageOptions}
+      </select>
+    </span>
+    <span class="pagination__group">
+      <span class="pagination__label">共 ${pageCount} 頁</span>
+      <button class="pagination__arrow" type="button" data-page-prev aria-label="上一頁"${page <= 1 ? ' disabled' : ''}>${CHEVRON_L}</button>
+      <button class="pagination__arrow" type="button" data-page-next aria-label="下一頁"${page >= pageCount ? ' disabled' : ''}>${CHEVRON_R}</button>
     </span>`
 }
 
@@ -98,6 +110,9 @@ pager.addEventListener('change', (e) => {
   if (e.target.matches('[data-page-size]')) {
     pageSize = Number(e.target.value)
     page = 1
+    renderTable()
+  } else if (e.target.matches('[data-page-jump]')) {
+    page = Number(e.target.value)
     renderTable()
   }
 })

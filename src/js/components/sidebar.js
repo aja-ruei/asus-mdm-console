@@ -1,7 +1,7 @@
 import { nav } from '../data/nav-config.js'
 
-const CHEVRON = `<svg class="sidebar__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+const CHEVRON = `<svg class="sidebar__chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
 </svg>`
 
 // 二級選單：分組標題 + 葉項；葉 path 為 null 渲染為停用
@@ -25,14 +25,16 @@ function groupHtml(item, current) {
   const childActive = hasActiveChild(item, current)
   const selfActive = item.id === current
   const activeCls = childActive || selfActive ? ' is-active' : ''
-  const expandedCls = childActive ? ' is-expanded' : ''
+  // 預設不自動展開（即使當前頁屬於此群組）：展開側欄維持七個一級入口的乾淨佈局（對齊設計稿），
+  // 展開↔收合切換時各 icon 的水平與垂直位置完全一致、零位移。展開仍可由使用者點擊切換。
+  const expandedCls = ''
 
   const icon = `<img class="sidebar__icon" src="/assets/${item.icon}" alt="" />`
   const label = `<span class="sidebar__label">${item.label}</span>`
 
   let row
   if (item.children) {
-    row = `<button class="sidebar__item${activeCls}" type="button" data-toggle aria-expanded="${childActive}">
+    row = `<button class="sidebar__item${activeCls}" type="button" data-toggle aria-expanded="false">
       ${icon}${label}${CHEVRON}
     </button>`
   } else if (item.path) {
@@ -54,9 +56,8 @@ function groupHtml(item, current) {
 
 export function renderSidebar(el) {
   const current = document.body.dataset.nav
-  const main = nav.filter((i) => i.id !== 'settings')
-  const footer = nav.filter((i) => i.id === 'settings')
 
+  // 設計稿：設定為第 7 個一級入口，與其他項連續排列（不釘在底部）
   el.outerHTML = `
     <nav class="sidebar" aria-label="主導覽">
       <div class="sidebar__head">
@@ -68,9 +69,7 @@ export function renderSidebar(el) {
           <img src="/assets/icon_open-panel.svg" alt="" />
         </button>
       </div>
-      <div class="sidebar__divider"></div>
-      <div class="sidebar__nav">${main.map((i) => groupHtml(i, current)).join('')}</div>
-      <div class="sidebar__footer">${footer.map((i) => groupHtml(i, current)).join('')}</div>
+      <div class="sidebar__nav">${nav.map((i) => groupHtml(i, current)).join('')}</div>
     </nav>`
 }
 

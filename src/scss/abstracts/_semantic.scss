@@ -5,7 +5,11 @@
 $color-bg-page: t.$color-gray-10;        // 頁面底色：最淺灰階 #f5f5f5
 $color-bg-surface: #fff;                 // 卡片／面板底色：tokens 無 white，用字面值
 $color-text-primary: t.$color-gray-90;   // 主文字：最深灰階 #262626
+$color-text-label: t.$color-gray-80;     // 導覽標籤：深灰 #4d4d4d（設計稿 side-menu 標籤色）
 $color-text-secondary: t.$color-gray-60; // 次要文字：中灰階 #818181
 $color-border: t.$color-gray-30;         // 一般框線：淺灰階 #cccccc
+$color-border-subtle: t.$color-gray-20;  // 次要框線：#dcdcdc（表頭欄分隔線／分頁上緣／標籤框）
+$color-border-faint: t.$color-gray-10;   // 最淺分隔線：#f5f5f5（資料列底線）
 $color-accent: t.$color-blue-60;         // 品牌主色：藍階中段 #006ce1
+$color-accent-soft: t.$color-blue-40;    // 柔和品牌色：藍階淺段 #61adff（設計稿頭像底）
 $font-family-base: t.$font-family-segoe-ui, system-ui, sans-serif;

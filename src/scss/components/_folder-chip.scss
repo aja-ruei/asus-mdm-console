@@ -4,12 +4,12 @@
 .folder-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px; // 設計稿 Tag gap4
   max-width: 280px;
-  padding: 4px 10px;
-  border: 1px solid $color-border;
-  border-radius: 6px;
-  background: $color-bg-surface;
+  padding: 4px 6px; // 設計稿 Tag px6 py4
+  border: 1px solid $color-border-subtle; // 設計稿 tag/stroke gray-20
+  border-radius: 4px; // 設計稿 Tag radius 4
+  background: $color-bg-page; // 設計稿 tag/bg gray-10
 }
 
 .folder-chip__icon {
@@ -19,5 +19,8 @@
 }
 
 .folder-chip__label {
+  font-size: 12px; // 設計稿 Tag 字 size/xs
+  font-weight: 500; // Medium
+  color: $color-text-label; // gray-80
   @include truncate;
 }

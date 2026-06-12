@@ -5,14 +5,19 @@
   grid-template:
     'sidebar header' auto
     'sidebar main' 1fr / 220px 1fr;
-  min-height: 100vh;
+  // 外殼鎖定視窗高：側欄與標頭恆為滿版、不隨內容捲走；內容超出時於 .page 內部捲動。
+  // 不在此設 overflow:hidden——收合態的 hover 飛出選單需要溢出 rail。
+  height: 100vh;
   transition: grid-template-columns 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .page {
   grid-area: main;
-  padding: 24px;
+  // 設計稿：白卡距側欄/視窗邊 16，上緣貼齊 header（68）。外距走 page，內距走 surface。
+  padding: 0 16px 16px;
   min-width: 0; // 防止表格撐爆 grid
+  min-height: 0; // 允許 grid item 收縮，內部捲動才會生效
+  overflow-y: auto; // 內容超出視窗時於此捲動，側欄／標頭維持滿版
 }
 
 // 收合（icon rail）：唯一由 body class 驅動，可由使用者 toggle 控制（桌機/平板皆同）。

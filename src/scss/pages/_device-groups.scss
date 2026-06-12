@@ -3,16 +3,26 @@
 // 白色內容卡片（頁面主容器，可複用於其他列表頁）
 .surface {
   background: $color-bg-surface;
-  border-radius: 12px;
+  border-radius: 16px; // 設計稿卡片圓角 16
   padding: 24px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(102, 102, 102, 0.1); // 設計稿卡片陰影
+}
+
+// 卡片填滿可視高度並「內部分區捲動」：標題/工具列固定在上、分頁固定在下，
+// 中間表格區自行捲動。height:100% + overflow:hidden 讓卡片不長過版面，
+// 分頁因此永遠可見（避免整個 .page 捲動把釘底的分頁帶出視窗外）。
+.page-device-groups .surface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .page-head {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 32px; // 設計稿標題列 ↔ 表格區 gap32
 }
 
 .page-head__title {
@@ -30,6 +40,15 @@
 // 表格容器：平板以下橫向捲動，避免撐爆版面（spec §10）
 .table-scroll {
   overflow-x: auto;
+}
+
+// 本頁表格區為卡片內唯一可伸縮/捲動區：吃掉剩餘高度（少列時自然把分頁推到底），
+// 內容過長時於此縱向捲動，標題列與分頁不被帶走。min-height:0 讓 flex 子層能正確收縮捲動。
+// 僅作用於此頁，不動到其他頁的 .table-scroll 行為。
+.page-device-groups .table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 @include respond(tablet) {

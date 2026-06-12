@@ -2,21 +2,54 @@
 
 .data-table {
   width: 100%;
-  border-collapse: collapse;
+  // 設計稿：表頭為灰色圓角列（pill），列間僅最淺底線、無外框
+  border-collapse: separate;
+  border-spacing: 0;
   background: $color-bg-surface;
-  border: 1px solid $color-border;
-  border-radius: 8px;
+  font-size: 14px;
 
   th,
   td {
-    padding: 10px 16px;
+    padding: 0 12px;
     text-align: left;
-    border-bottom: 1px solid $color-border;
   }
 
-  th {
-    color: $color-text-secondary;
+  // 表頭：gray-10 底、gray-80 字、Semibold、h40、欄間 20px 分隔線
+  thead th {
+    position: relative;
+    height: 40px;
+    background: $color-bg-page; // gray-10 #f5f5f5
+    color: $color-text-label; // gray-80 #4d4d4d
     font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+  }
+
+  thead th:first-child {
+    border-radius: 8px 0 0 8px; // 設計稿 table radius 8（左側）
+  }
+
+  thead th:last-child {
+    border-radius: 0 8px 8px 0; // 右側
+  }
+
+  // 欄分隔線：群組名稱／裝置數量／建立日期 右緣（不含勾選欄與最後一欄），h20 置中
+  thead th:not(:first-child):not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 20px;
+    transform: translateY(-50%);
+    background: $color-border-subtle; // gray-20 #dcdcdc
+  }
+
+  // 資料列：h56、最淺底線（gray-10）
+  tbody td {
+    height: 56px;
+    border-bottom: 1px solid $color-border-faint; // gray-10 #f5f5f5
+    color: $color-text-primary;
   }
 }
 
@@ -25,13 +58,11 @@
   @include truncate;
 }
 
-// 表頭底色（可選取列表用）
-.data-table--selectable thead th {
-  background: $color-bg-page;
-}
-
+// 勾選欄：設計稿 px16、置中
 .data-table__check {
-  width: 48px;
+  width: 52px;
+  padding-left: 16px;
+  padding-right: 16px;
   text-align: center;
 }
 

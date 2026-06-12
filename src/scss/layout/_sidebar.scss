@@ -14,11 +14,13 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   flex-direction: column;
   gap: 16px; // 設計稿 Side-Menu：toggle ↔ 導覽群組間距 16
   background: $color-bg-page; // 展開：與整頁底色一致（gray-10）；收合漸變為白
-  border-right: 1px solid $color-border;
-  padding: 16px 12px; // 設計稿 Side-Menu：py16 / px12
+  padding: 16px; // 設計稿 Side-Menu：p16（item 寬 188 ＝ 220 − 16×2）
   position: relative;
   z-index: 20;
-  overflow: visible; // 讓收合態飛出 popup 不被裁切
+  // 展開：選單過長（含 inline 展開的子選單）時於側欄內部捲動，
+  // 避免外溢把文件推高、導致捲動時側欄露出空白。收合態改回 visible（見 @mixin collapsed）。
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: background-color $nav-dur $nav-ease, box-shadow $nav-dur $nav-ease;
 }
 
@@ -49,23 +51,16 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .sidebar__logo {
-  height: 18px;
+  height: 16px; // 設計稿 logo/normal h16
   width: auto;
 }
 
 .sidebar__brand-text {
   font-family: $font-family-base; // 參考用 'TT Norms Pro' 500；本專案無此字型，待確認是否引入
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px; // 設計稿 Console 字樣 16
   color: $color-text-primary;
   white-space: nowrap;
-}
-
-// 標頭下方分隔線
-.sidebar__divider {
-  height: 1px;
-  background: $color-border;
-  margin: 0 8px 8px;
 }
 
 .sidebar__toggle {
@@ -83,13 +78,6 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
 
-.sidebar__footer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: auto;
-}
-
 .sidebar__group {
   position: relative;
 }
@@ -98,12 +86,15 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 .sidebar__item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px; // 設計稿 side-menu_item：icon ↔ 標籤 gap8
   width: 100%;
   height: 40px;
   padding: 4px 8px;
   border-radius: 8px;
-  color: $color-text-primary;
+  color: $color-text-label; // 設計稿標籤色 gray-80 #4d4d4d
+  font-weight: 600; // 設計稿標籤 Semibold
+  font-size: 16px; // 設計稿 size/m
+  line-height: 22px; // 設計稿 line-height/m
   white-space: nowrap;
   text-align: left;
   transition: background-color $nav-dur $nav-ease;
@@ -131,6 +122,9 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: 24px; // 設計稿 icon size 24
   height: 24px;
   flex-shrink: 0;
+  // 收合時 item 內容寬僅 20px，reset 的 img{max-width:100%} 會把 icon 壓到 20px 變小；
+  // 解除上限，icon 在任何狀態都維持 24（溢出的 4px 落在 item padding 內，rail 不裁切）。
+  max-width: none;
 }
 
 .sidebar__label {
@@ -225,8 +219,12 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 // 收合型態：icon rail + hover 飛出
 @mixin collapsed {
   .sidebar {
+    // 左右 padding 與展開態一致（16），讓各入口 icon 的水平位置在收合/展開間完全不變、
+    // 避免切換時 icon 位移閃爍。icon 中心 36（rail 中心 34，差 2px 視覺等同置中）。
+    padding: 16px;
     background: $color-bg-surface; // 收合：漸變為白
     box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.1); // 展開無陰影、收合有
+    overflow: visible; // 收合：hover 飛出選單需溢出 rail，不可裁切
   }
 
   // 收合時標頭僅置中 toggle
@@ -255,19 +253,20 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: none;
   }
 
-  // 收合不顯示分隔線：移出版面流，維持設計稿 toggle ↔ nav 的 16 間距
-  .sidebar__divider {
-    display: none;
+  // 收合時 item 維持靠左（不改 justify-content:center）：icon 固定在展開時的 x=24，
+  // 收合切換時 icon 不位移；標籤以 max-width/opacity 淡出、chevron 隱藏即可。
+  // 不需動 gap——標籤寬度歸 0 後，icon 後方的 gap 只是空白，不影響 icon 位置。
+
+  // 收合：inline 子選單一律收合（含 active 的 is-expanded）。選擇器特異度高過
+  // `.sidebar__group.is-expanded .sidebar__sub`，故 active 群組在收合時 rows 1fr→0fr。
+  // 仍留在版面流中（非 absolute），靠 base 的 grid-template-rows 過場「平滑關閉」——
+  // 切換收合時下方各入口 icon 是順順上移，不會瞬間跳動。隱藏時高度 0、不佔版面、不撐高文件。
+  .sidebar__group .sidebar__sub {
+    grid-template-rows: 0fr;
   }
 
-  .sidebar__item {
-    justify-content: center;
-    gap: 0; // 移除 icon 與（max-width:0 的）標籤間距，icon 才會真正置中
-  }
-
-  // 收合：子選單改為 hover 飛出 popup（白底浮層 + 淡入位移）
-  .sidebar__sub {
-    display: block;
+  // hover：彈出為白底浮層（absolute、不佔版面、即時顯示）
+  .sidebar__group:hover .sidebar__sub {
     position: absolute;
     left: 100%;
     top: 0;
@@ -279,22 +278,27 @@ $nav-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     z-index: 30;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-4px);
-    // 即時隱藏：避免展開→收合切換時所有飛出子選單一起淡出造成殘影；僅 hover 進場有過場
+    // none(auto) 與 0fr 之間「不可動畫」→ hover 進/出即時切換、無展開殘影；
+    // 而切換收合用的是 1fr↔0fr（可動畫），兩者互不干擾。
+    grid-template-rows: none;
     transition: none;
+
+    // 透明橋接：補滿 rail 與浮層之間 8px 間隙的 hover 區，
+    // 避免游標往右滑過間隙時 :hover 中斷、浮層提早消失而選不到項目
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -8px;
+      width: 8px;
+    }
   }
 
-  .sidebar__group:hover .sidebar__sub {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-    transition: opacity $nav-dur $nav-ease, transform $nav-dur $nav-ease;
-  }
-
-  .sidebar__sub-inner {
-    overflow: visible;
+  // hover 浮層內層：全顯 + 長選單限高內捲（非 active 群組也要可見，故覆蓋 opacity）
+  .sidebar__group:hover .sidebar__sub-inner {
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
     opacity: 1;
     padding-left: 0;
   }
